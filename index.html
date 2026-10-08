@@ -113,12 +113,12 @@
   <p>HWSF writes each municipal yield as the sum of a prefecture-year level, shared by all study municipalities in a prefecture, and a municipal deviation centered within each prefecture-year. Three base networks process the regional context and the daily weather. With statistical calibration and recent yield history, they give a base prefecture yield, a base municipal deviation, and 147 features for each municipality.</p>
   <figure>
     <img src="assets/fig_base_predictions.png" alt="Base predictions: regional network, annual-weather and local-weather temporal convolutional networks with residual blocks and FiLM, statistical calibration, and history correction.">
-    <figcaption>Base predictions. Numbered inputs: 1&nbsp;daily weather, 2&nbsp;regional context, 3&nbsp;recent history, 4&nbsp;seasonal forecasts and weather summaries, 5&nbsp;SST indices. The panel at the bottom left magnifies one residual block.</figcaption>
+    <figcaption>Base predictions. Circled numbers refer to the inputs: 1&nbsp;daily weather, 2&nbsp;regional context, 3&nbsp;recent history, 4&nbsp;seasonal forecasts and weather summaries, 5&nbsp;SST indices. Numbers on lines are channel or feature counts. The panel at the bottom left magnifies one residual block.</figcaption>
   </figure>
   <p>Two correction networks then adjust the two components separately. The prefecture correction reads the mean and standard deviation of the features within each prefecture-year; the municipal correction reads each municipality's own features, and its output is centered within the prefecture-year. Features learned from sea surface temperature (SST) maps by a masked reconstruction encoder enter only the prefecture-year level, through an SST fusion network.</p>
   <figure>
     <img src="assets/fig_hierarchical_correction.png" alt="Hierarchical correction: within-prefecture mean and SD feed the prefecture correction, individual features feed the municipal correction, and SST-map features from a frozen encoder feed the SST fusion network.">
-    <figcaption>Hierarchical correction. The prefecture, municipal, and SST fusion networks share the magnified residual MLP.</figcaption>
+    <figcaption>Hierarchical correction. The prefecture, municipal, and SST fusion networks have the structure of the magnified residual MLP.</figcaption>
   </figure>
 </section>
 
