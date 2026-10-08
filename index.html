@@ -34,6 +34,11 @@
   .tags span {
     border: 1px solid var(--line); border-radius: 999px; padding: 2px 12px; font-size: .88rem; color: var(--muted);
   }
+  .links { margin-top: 18px; display: flex; justify-content: center; gap: 10px; }
+  .links a {
+    background: var(--accent); color: #fff; text-decoration: none; border-radius: 999px; padding: 6px 18px; font-size: .95rem;
+  }
+  .links a:hover { background: #1b4767; }
   section { margin-top: 44px; }
   h2 {
     font-size: 1.35rem; margin: 0 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--line);
@@ -81,6 +86,7 @@
     <span>Annual refitting, 2019&ndash;2025</span>
     <span>Prediction intervals</span>
   </div>
+  <p class="links"><a href="https://github.com/boukuhaku/yield-prediction/tree/deeplearning">Code (GitHub)</a></p>
 </header>
 
 <figure class="narrow">
@@ -187,7 +193,7 @@
       <figcaption>Ocean regions of the SST indices and the domain of the SST maps.</figcaption>
     </figure>
   </div>
-  <p>All inputs were available before July&nbsp;31, 00:00 Japan Standard Time. We do not redistribute the source data; they can be obtained from the providers.</p>
+  <p>All inputs were available before July&nbsp;31, 00:00 Japan Standard Time. We do not redistribute the source data; they can be obtained from the providers. The code and experiment records are available in the <a href="https://github.com/boukuhaku/yield-prediction/tree/deeplearning">GitHub repository</a>.</p>
   <ul class="sources">
     <li>Municipal rice yields: crop statistics of the Ministry of Agriculture, Forestry and Fisheries of Japan (<a href="https://www.maff.go.jp/j/tokei/kouhyou/sakumotu/sakkyou_kome/">MAFF</a>, in Japanese)</li>
     <li>Daily weather: agro-meteorological grid data of the National Agriculture and Food Research Organization (<a href="https://www.naro.go.jp/project/results/laboratory/narc/2012/210a1_01_43.html">NARO</a>, in Japanese; registration required)</li>
