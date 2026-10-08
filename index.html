@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HWSF: Preharvest Municipal Rice Yield Estimation</title>
+<meta name="description" content="Project page of HWSF, a hierarchical model that estimates municipal rice yields at the end of July from weather, sea surface temperature, seasonal forecasts, and yield history, with prediction intervals.">
+<style>
+  :root {
+    --ink: #1f2933;
+    --muted: #52606d;
+    --line: #d9dee3;
+    --accent: #245a81;
+    --gold: #a67125;
+    --paper: #ffffff;
+    --soft: #f5f7f9;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 17px/1.6 "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  }
+  main { max-width: 980px; margin: 0 auto; padding: 0 20px 64px; }
+  header { text-align: center; padding: 56px 0 28px; }
+  h1 {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 2.05rem; line-height: 1.25; font-weight: 700; margin: 0 auto 14px; max-width: 900px;
+  }
+  .sub { color: var(--muted); font-size: 1.02rem; margin: 0; }
+  .tags { margin-top: 14px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .tags span {
+    border: 1px solid var(--line); border-radius: 999px; padding: 2px 12px; font-size: .88rem; color: var(--muted);
+  }
+  section { margin-top: 44px; }
+  h2 {
+    font-size: 1.35rem; margin: 0 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--line);
+  }
+  h3 { font-size: 1.05rem; margin: 26px 0 8px; }
+  p { margin: 0 0 12px; }
+  figure { margin: 18px 0 8px; }
+  figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; }
+  figure.narrow { max-width: 520px; margin-left: auto; margin-right: auto; }
+  figcaption { color: var(--muted); font-size: .9rem; margin-top: 8px; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 26px 0 6px; }
+  .stat { background: var(--soft); border: 1px solid var(--line); border-radius: 8px; padding: 14px 12px; text-align: center; }
+  .stat b { display: block; font-size: 1.5rem; color: var(--accent); line-height: 1.2; }
+  .stat span { font-size: .86rem; color: var(--muted); }
+  .abstract { background: var(--soft); border-left: 3px solid var(--accent); padding: 14px 18px; border-radius: 4px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; margin: 10px 0 4px; }
+  th, td { padding: 6px 8px; text-align: right; border-bottom: 1px solid var(--line); }
+  th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align: left; }
+  thead th { border-bottom: 2px solid var(--ink); font-weight: 600; }
+  tr.best td { font-weight: 700; color: var(--accent); }
+  .note { color: var(--muted); font-size: .86rem; }
+  ul.sources { padding-left: 20px; margin: 8px 0; }
+  ul.sources li { margin: 4px 0; }
+  a { color: var(--accent); }
+  footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: .86rem; text-align: center; }
+  @media (max-width: 760px) {
+    body { font-size: 16px; }
+    h1 { font-size: 1.55rem; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .two { grid-template-columns: 1fr; }
+    main { padding: 0 16px 48px; }
+    .table-wrap { overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Preharvest Municipal Rice Yield Estimation With Hierarchical Weather and Sea Surface Temperature Fusion and Uncertainty Quantification</h1>
+  <p class="sub">HWSF &middot; Hierarchical Weather and Sea Surface Temperature Fusion</p>
+  <div class="tags">
+    <span>80 municipalities in four Japanese prefectures</span>
+    <span>Estimates at the end of July</span>
+    <span>Annual refitting, 2019&ndash;2025</span>
+    <span>Prediction intervals</span>
+  </div>
+</header>
+
+<figure class="narrow">
+  <img src="assets/fig1_concept.png" alt="Concept: information available before July 31 enters a hierarchical model that predicts a prefecture-year level and centered municipal deviations, whose sum gives the municipal yield.">
+  <figcaption>Information available before the July&nbsp;31 cutoff enters the model, which predicts a prefecture-year level shared by the municipalities of a prefecture and municipal deviations centered within each prefecture-year.</figcaption>
+</figure>
+
+<div class="stats">
+  <div class="stat"><b>11.50</b><span>RMSE (kg/10&nbsp;a) over 560 municipality-year records</span></div>
+  <div class="stat"><b>23.3%</b><span>lower RMSE than a local-level historical baseline</span></div>
+  <div class="stat"><b>94.4%</b><span>coverage of the 95% prediction intervals, 2020&ndash;2025</span></div>
+  <div class="stat"><b>24.0%</b><span>narrower 95% intervals than the baseline</span></div>
+</div>
+
+<section>
+  <h2>Abstract</h2>
+  <div class="abstract">
+    <p>Early estimates of rice yield support storage planning before the harvest. However, official municipal statistics appear only after the harvest, so preharvest estimates must rely on other measured quantities. Municipal estimation must also capture both regional growing conditions and local yield differences. We developed the Hierarchical Weather and Sea Surface Temperature Fusion model for municipal rice yield estimation at the end of July. The model combines daily weather, regional climate, recent yield history, seasonal forecasts, and ocean information. Separate prediction branches represent the prefecture-year yield level and the differences among municipalities within each prefecture. We used a masked reconstruction encoder to learn spatial features from historical sea surface temperature maps. These features supplement sea surface temperature indices in the prefecture branch, while local weather and historical residuals inform the municipal branch. We quantified uncertainty by Monte Carlo propagation of input uncertainty and by prediction intervals calibrated with past residuals. In a retrospective evaluation with annual refitting in four Japanese prefectures, the proposed model achieved a root mean square error of 11.50&nbsp;kg/10&nbsp;a, 23.3% lower than that of a local-level historical baseline. It also outperformed machine-learning and nonhierarchical baselines in all four prefectures. Its 95% prediction intervals covered 94.4% of the evaluation records and were 24.0% narrower than those of this baseline. Propagated input uncertainty was small compared with the residual error. Ablation experiments identified contributions from sea surface temperature information, annual and local weather, and feature dispersion, with a smaller additional gain from learned sea surface temperature map features.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Method</h2>
+  <p>HWSF writes each municipal yield as the sum of a prefecture-year level, shared by all study municipalities in a prefecture, and a municipal deviation centered within each prefecture-year. Three base networks process the regional context and the daily weather. With statistical calibration and recent yield history, they give a base prefecture yield, a base municipal deviation, and 147 features for each municipality.</p>
+  <figure>
+    <img src="assets/fig_base_predictions.png" alt="Base predictions: regional network, annual-weather and local-weather temporal convolutional networks with residual blocks and FiLM, statistical calibration, and history correction.">
+    <figcaption>Base predictions. Numbered inputs: 1&nbsp;daily weather, 2&nbsp;regional context, 3&nbsp;recent history, 4&nbsp;seasonal forecasts and weather summaries, 5&nbsp;SST indices. The panel at the bottom left magnifies one residual block.</figcaption>
+  </figure>
+  <p>Two correction networks then adjust the two components separately. The prefecture correction reads the mean and standard deviation of the features within each prefecture-year; the municipal correction reads each municipality's own features, and its output is centered within the prefecture-year. Features learned from sea surface temperature (SST) maps by a masked reconstruction encoder enter only the prefecture-year level, through an SST fusion network.</p>
+  <figure>
+    <img src="assets/fig_hierarchical_correction.png" alt="Hierarchical correction: within-prefecture mean and SD feed the prefecture correction, individual features feed the municipal correction, and SST-map features from a frozen encoder feed the SST fusion network.">
+    <figcaption>Hierarchical correction. The prefecture, municipal, and SST fusion networks share the magnified residual MLP.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Uncertainty evaluation</h2>
+  <div class="two">
+    <div>
+      <p>We treat the trained model as the function of a measurement model and evaluate the uncertainty of its estimates in two steps. Monte Carlo propagation perturbs the target-year inputs (weather representativeness, SST map errors, the reporting resolution of earlier yields, and SST-index resolution) and gives the input standard uncertainty of each estimate. Residuals of earlier evaluation years then calibrate the prediction interval. The reference value is the municipal statistic that MAFF derives from the crop survey at harvest.</p>
+    </div>
+    <figure>
+      <img src="assets/fig_measurement_chain.png" alt="Measurement chain from input data products through the trained model to the estimate, its prediction interval, and the evaluation against the published statistic.">
+      <figcaption>Measurement chain. Dashed arrows denote comparisons after the reference value is published.</figcaption>
+    </figure>
+  </div>
+  <div class="two">
+    <figure>
+      <img src="assets/results_intervals.png" alt="Empirical versus nominal coverage of the prediction intervals and annual coverage of the 95% intervals for HWSF and LL.">
+      <figcaption>Coverage of the prediction intervals for the 480 records of 2020&ndash;2025.</figcaption>
+    </figure>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Nominal</th><th>Method</th><th>Coverage</th><th>Mean width</th></tr></thead>
+        <tbody>
+          <tr class="best"><td>95%</td><td>HWSF</td><td>94.4%</td><td>39.7</td></tr>
+          <tr><td></td><td>LL</td><td>88.1%</td><td>52.2</td></tr>
+          <tr class="best"><td>90%</td><td>HWSF</td><td>88.1%</td><td>33.3</td></tr>
+          <tr><td></td><td>LL</td><td>84.0%</td><td>43.8</td></tr>
+          <tr class="best"><td>68%</td><td>HWSF</td><td>64.0%</td><td>20.1</td></tr>
+          <tr><td></td><td>LL</td><td>68.8%</td><td>26.5</td></tr>
+        </tbody>
+      </table>
+      <p class="note">Widths in kg/10&nbsp;a. LL is the local-level historical baseline, with intervals constructed in the same way from its own residuals. At the 95% level, the mean interval scores are 58.6 for HWSF and 95.8 for LL.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Results</h2>
+  <p>We refitted every model for each target year from 2019 to 2025, so each estimate uses only labels of earlier years. Over the 560 municipality-year records, HWSF had the lowest error among the compared methods.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Group</th><th>Method</th><th>RMSE</th><th>MAE</th><th>Bias</th><th>R&sup2;</th></tr></thead>
+      <tbody>
+        <tr><td>Historical</td><td>MA3</td><td>16.489</td><td>12.249</td><td>+0.927</td><td>0.747</td></tr>
+        <tr><td></td><td>LL</td><td>14.980</td><td>11.000</td><td>+1.464</td><td>0.791</td></tr>
+        <tr><td></td><td>LL-WC</td><td>15.052</td><td>11.186</td><td>+1.441</td><td>0.789</td></tr>
+        <tr><td>Machine learning</td><td>Random forest</td><td>17.131</td><td>13.202</td><td>&minus;1.829</td><td>0.727</td></tr>
+        <tr><td></td><td>XGBoost</td><td>17.076</td><td>13.212</td><td>&minus;2.026</td><td>0.729</td></tr>
+        <tr><td>Neural</td><td>Direct network</td><td>16.951</td><td>13.681</td><td>&minus;0.049</td><td>0.733</td></tr>
+        <tr><td></td><td>Single residual network</td><td>12.096</td><td>9.123</td><td>+1.239</td><td>0.864</td></tr>
+        <tr><td></td><td>H-Index (without SST maps)</td><td>11.731</td><td>8.962</td><td>&minus;0.606</td><td>0.872</td></tr>
+        <tr class="best"><td></td><td>HWSF</td><td>11.495</td><td>8.769</td><td>&minus;0.290</td><td>0.877</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">RMSE, MAE, and bias (prediction minus observation) in kg/10&nbsp;a, where 10&nbsp;a equals 1000&nbsp;m&sup2;. MA3: three-year moving average; LL: local-level model; LL-WC: LL with a linear weather correction.</p>
+  <figure class="narrow">
+    <img src="assets/results_accuracy.png" alt="RMSE by prefecture and year, decomposition of the mean squared error, and predicted versus observed yields.">
+    <figcaption>Prediction errors by prefecture and year, the split of the mean squared error into the shared prefecture-year error and the centered municipal error, and predicted versus observed yields.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Data</h2>
+  <div class="two">
+    <figure>
+      <img src="assets/fig3a_study_area.png" alt="Map of the 80 study municipalities in Fukui, Ishikawa, Toyama, and Niigata.">
+      <figcaption>Study municipalities: Fukui (17), Ishikawa (19), Niigata (29), and Toyama (15).</figcaption>
+    </figure>
+    <figure>
+      <img src="assets/fig_sst_regions.png" alt="Ocean regions of the SST indices and the domain of the SST maps.">
+      <figcaption>Ocean regions of the SST indices and the domain of the SST maps.</figcaption>
+    </figure>
+  </div>
+  <p>All inputs were available before July&nbsp;31, 00:00 Japan Standard Time. We do not redistribute the source data; they can be obtained from the providers.</p>
+  <ul class="sources">
+    <li>Municipal rice yields: crop statistics of the Ministry of Agriculture, Forestry and Fisheries of Japan (<a href="https://www.maff.go.jp/j/tokei/kouhyou/sakumotu/sakkyou_kome/">MAFF</a>, in Japanese)</li>
+    <li>Daily weather: agro-meteorological grid data of the National Agriculture and Food Research Organization (<a href="https://www.naro.go.jp/project/results/laboratory/narc/2012/210a1_01_43.html">NARO</a>, in Japanese; registration required)</li>
+    <li>SST maps: NOAA optimum interpolation SST, version&nbsp;2.1 (<a href="https://www.ncei.noaa.gov/products/optimum-interpolation-sst">OISST</a>)</li>
+    <li>SST indices: Ni&ntilde;o indices of the NOAA Climate Prediction Center (<a href="https://www.cpc.ncep.noaa.gov/data/indices/">CPC</a>) and NINO.WEST of the Japan Meteorological Agency (<a href="https://ds.data.jma.go.jp/tcc/tcc/products/elnino/index/Readme.txt">JMA</a>)</li>
+    <li>Seasonal forecasts: NCEP Climate Forecast System version&nbsp;2 (<a href="https://cfs.ncep.noaa.gov/cfsv2.info/">CFSv2</a>), July runs</li>
+    <li>Prefecture-level weather for fitting the SST-index correction: <a href="https://power.larc.nasa.gov/">NASA POWER</a></li>
+    <li>Municipal boundaries: administrative-zone data N03 of the Ministry of Land, Infrastructure, Transport and Tourism (<a href="https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-v3_1.html">MLIT</a>, in Japanese)</li>
+  </ul>
+</section>
+
+<footer>
+  Figures and results are taken from the manuscript. Last updated October 2026.
+</footer>
+</main>
+</body>
+</html>
